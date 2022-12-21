@@ -29,10 +29,7 @@ http://localhost:8000/stores/
 POST-запрос с json-телом для сохранения данных о произведенной продаже  
 http://localhost:8000/sales/  
     Пример тела запроса в json формате -  
-        {  
-            "item_id": 1,  
-            "store_id": 1  
-        }  
+        `{"item_id": 1,"store_id": 1}`  
 
 GET-запрос на получение данных по топ 10 самых доходных магазинов за месяц  
 http://localhost:8000/stores/top/
