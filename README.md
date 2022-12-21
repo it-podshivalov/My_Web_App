@@ -7,10 +7,10 @@
 2. В командной строке перейдите в директорию с проектом
 
 3. Установите необходимые пакеты выполнив команду-  
-pip install -r requirements.txt
+`pip install -r requirements.txt`
 
 4. Запустите приложение выполнив команду-  
-uvicorn my_web_app:app --host 0.0.0.0
+`uvicorn my_web_app:app --host 0.0.0.0`
 
 
 ### Описание работы: ### 
