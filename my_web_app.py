@@ -75,7 +75,13 @@ class StoresTop(BaseModel):
 class ItemsTop(BaseModel):
     id: int
     name: str
-    count_of_sales: int               
+    count_of_sales: int
+
+class Sales(BaseModel):
+    id: int
+    sale_time: datetime
+    item_id: int
+    store_id: int                   
 
 app = FastAPI()
 
@@ -160,7 +166,7 @@ async def show_top_items():
         """
     return await database.fetch_all(query)     
 
-@app.post("/sales/")
+@app.post("/sales/", response_model=Sales)
 async def create_sale(sale: SalesIn):
     query = sales.insert().values(sale_time=sale.sale_time, item_id=sale.item_id, store_id=sale.store_id)
     last_record_id = await database.execute(query)
