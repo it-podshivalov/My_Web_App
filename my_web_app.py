@@ -158,8 +158,6 @@ async def show_top_items():
         ORDER BY count_of_sales DESC
         LIMIT 10
         """
-    return await database.fetch_all(query)
-    query = sales.select()
     return await database.fetch_all(query)     
 
 @app.post("/sales/")
