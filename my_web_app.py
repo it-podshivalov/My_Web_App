@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 import databases
+from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
 from sqlalchemy import Table, MetaData, Column, Integer, String, DateTime, VARCHAR, Float, ForeignKey, create_engine
@@ -57,6 +58,25 @@ class SalesIn(BaseModel):
     item_id: int
     store_id: int
 
+class Stores(BaseModel):
+    id: int
+    address: str
+
+class Items(BaseModel):
+    id: int
+    name: str
+    price: float
+
+class StoresTop(BaseModel):
+    id: int
+    address: str
+    sum_of_sales: float
+
+class ItemsTop(BaseModel):
+    id: int
+    name: str
+    count_of_sales: int               
+
 app = FastAPI()
 
 @app.on_event("startup")
@@ -100,13 +120,13 @@ async def startup():
 async def shutdown():
     await database.disconnect()
 
-@app.get("/stores/")
+@app.get("/stores/", response_model=List[Stores])
 async def read_stores():
     query = stores.select()
     return await database.fetch_all(query)
 
 # обрабатывает GET-запрос на получение данных по топ 10 самых доходных магазинов за месяц (id + адрес + суммарная выручка)
-@app.get("/stores/top/")
+@app.get("/stores/top/", response_model=List[StoresTop])
 async def show_top_stores():
     date:str = (datetime.today() + relativedelta(months=-1)).strftime("%Y%m%d")
     query = f"""
@@ -121,13 +141,13 @@ async def show_top_stores():
         """
     return await database.fetch_all(query)
 
-@app.get("/items/")
+@app.get("/items/", response_model=List[Items])
 async def read_items():
     query = items.select()
     return await database.fetch_all(query)
 
 # обрабатывает GET-запрос на получение данных по топ 10 самых продаваемых товаров (id + наименование + количество проданных товаров)
-@app.get("/items/top/")
+@app.get("/items/top/", response_model=List[ItemsTop])
 async def show_top_items():
     query = """
         SELECT items.id, items.name, COUNT(items.name) AS count_of_sales
