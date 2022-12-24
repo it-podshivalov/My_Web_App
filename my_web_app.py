@@ -141,7 +141,7 @@ async def show_top_stores():
         JOIN stores ON sales.store_id = stores.id 
         JOIN items ON sales.item_id = items.id
         WHERE sales.sale_time >= '{date}'
-        GROUP BY stores.address, stores.id
+        GROUP BY stores.id
         ORDER BY sum_of_sales DESC
         LIMIT 10
         """
