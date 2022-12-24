@@ -160,7 +160,7 @@ async def show_top_items():
         FROM sales 
         JOIN stores ON sales.store_id = stores.id 
         JOIN items ON sales.item_id = items.id
-        GROUP BY items.name, items.id
+        GROUP BY items.id
         ORDER BY count_of_sales DESC
         LIMIT 10
         """
